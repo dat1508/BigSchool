@@ -12,6 +12,7 @@ namespace Lab04.Models
         {
         }
 
+        public virtual DbSet<Attendance> Attendances { get; set; }
         public virtual DbSet<Category> Categories { get; set; }
         public virtual DbSet<Course> Courses { get; set; }
 
@@ -20,6 +21,12 @@ namespace Lab04.Models
             modelBuilder.Entity<Category>()
                 .HasMany(e => e.Courses)
                 .WithRequired(e => e.Category)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Course>()
+                .HasMany(e => e.Attendances)
+                .WithRequired(e => e.Course)
+                .HasForeignKey(e => e.IdCourse)
                 .WillCascadeOnDelete(false);
         }
     }

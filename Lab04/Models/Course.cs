@@ -9,6 +9,12 @@ namespace Lab04.Models
     [Table("Course")]
     public partial class Course
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Course()
+        {
+            Attendances = new HashSet<Attendance>();
+        }
+
         public int Id { get; set; }
 
         [Required]
@@ -19,17 +25,14 @@ namespace Lab04.Models
         [StringLength(255)]
         public string Place { get; set; }
 
-
         public DateTime DateTime { get; set; }
 
-        [Required]
         public int CategoryId { get; set; }
-
         public string Name;
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Attendance> Attendances { get; set; }
 
         public virtual Category Category { get; set; }
-
-
         public List<Category> ListCategory = new List<Category>();
     }
 }
