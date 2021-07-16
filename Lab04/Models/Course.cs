@@ -28,11 +28,11 @@ namespace Lab04.Models
         public DateTime DateTime { get; set; }
 
         public int CategoryId { get; set; }
-        public string Name;
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Attendance> Attendances { get; set; }
 
         public virtual Category Category { get; set; }
-        public List<Category> ListCategory = new List<Category>();
+
     }
 }
