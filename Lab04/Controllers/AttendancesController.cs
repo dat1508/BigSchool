@@ -15,8 +15,6 @@ namespace Lab04.Controllers
             if (context.Attendances.Any(p => p.Attendee == userID && p.IdCourse ==
             attendanceDto.Id))
             {
-                // return BadRequest("The attendance already exists!");
-
                 // xóa thông tin khóa học đã đăng ký tham gia trong bảng Attendances
                 context.Attendances.Remove(context.Attendances.SingleOrDefault(p =>
                 p.Attendee == userID && p.IdCourse == attendanceDto.Id));
@@ -26,8 +24,7 @@ namespace Lab04.Controllers
             var attendance = new Attendance()
             {
                 IdCourse = attendanceDto.Id,
-                Attendee =
-            User.Identity.GetUserId()
+                Attendee = User.Identity.GetUserId()
             };
             context.Attendances.Add(attendance);
             context.SaveChanges();

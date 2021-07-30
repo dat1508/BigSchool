@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace Lab04.Controllers
 {
+    [Authorize]
     public class CourseController : Controller
     {
         // GET: Course
@@ -51,13 +52,16 @@ namespace Lab04.Controllers
         {
             BigSchoolContext context = new BigSchoolContext();
             ApplicationUser currentUser = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(System.Web.HttpContext.Current.User.Identity.GetUserId());
-            var listAttendances = context.Attendances.Where(p => p.Attendee == currentUser.Id).ToList();
+            var listAttendances = context.Attendances.Where(p => p.Attendee == currentUser.Id ).ToList();
             var courses = new List<Course>();
             foreach (Attendance temp in listAttendances)
             {
                 Course objCourse = temp.Course;
-                objCourse.Name = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(objCourse.LecturerId).Name;
-                courses.Add(objCourse);
+                if (objCourse.DateTime > DateTime.Now)
+                {
+                    objCourse.Name = System.Web.HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>().FindById(objCourse.LecturerId).Name;
+                    courses.Add(objCourse);
+                }
             }
             return View(courses);
         }
@@ -71,6 +75,7 @@ namespace Lab04.Controllers
             {
                 i.LecturerId = currentUser.Name;
             }
+            if (TempData["Error"] != null) ViewBag.Error = TempData["Error"].ToString();
             return View(courses);
         }
         public ActionResult Edit(int? id)
@@ -133,7 +138,8 @@ namespace Lab04.Controllers
             context.Courses.Remove(course);
             if (attendance != null)
             {
-                context.Attendances.Remove(attendance);
+                TempData["Error"] = "Khóa học đang có người tham gia!";
+                return RedirectToAction("Mine");
 
             }
             context.SaveChanges();

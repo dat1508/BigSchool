@@ -7,7 +7,12 @@
 <div class="jumbotron">
     <h1>DANH SÁCH</h1>
 </div>
-
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-danger" role="alert">
+        @ViewBag.Error
+    </div>
+}
 <div class="row">
     <ul class="course">
         @foreach (var course in Model)
